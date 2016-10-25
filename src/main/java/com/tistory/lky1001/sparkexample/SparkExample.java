@@ -37,5 +37,19 @@ public class SparkExample {
         });
 
         System.out.printf("\n\n\ntotal : %d\n", total);
+
+        // 파일 글자수 세기
+        JavaRDD<String> lines = sc.textFile("test.txt");
+
+        // 파일에서 줄 단위로 읽어서 글자 길이를 담는다.
+        JavaRDD<Integer> lineLengths = lines.map(s -> {
+            System.out.printf("s : %s\n", s);
+            return s.length();
+        });
+
+        // 줄 단위로 읽은 글자 길이를 누적한다.
+        int totalLength = lineLengths.reduce((a, b) -> a + b);
+
+        System.out.printf("\n\n\ntotalLength : %d\n", totalLength);
     }
 }
